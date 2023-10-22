@@ -73,6 +73,61 @@
                         <div class="card-box">                        
                             <div class="row">
                                 <div class="col-lg-12 col-sm-12 col-xs-12 col-md-12 col-xl-12">
+                                <?
+                                    
+                                    if (count($get_asmed_ugd)>0) {?>
+                                         <h3>Asmed UGD</h3>
+                                <table class="table table-sm table-responsive">
+                                    <tbody>
+                                    <tr>
+                                                    <th>Tanggal</th>
+                                                    <th>Dokter</th>
+                                                    <th>Anamnesis</th>
+                                                    <th>Keluhan Utama</th>
+                                                    <th>RPS</th>
+                                                    <th>Keadaan</th>
+                                                    <th>GCS</th>
+                                                    <th>Kesadaran</th>
+                                                    <th>Nadi</th>
+                                                    <th>RR</th>
+                                                    <th>Suhu</th>
+                                                    <th>SPO</th>
+                                                    <th>BB</th>
+                                                    <th>TB</th>
+                                                    <th>Ket. Fisik</th>
+                                                    <th>Diagnosis</th>
+                                                    <th>Tatalaksana</th>
+                                                </tr>
+                                        <?
+                                            foreach ($get_asmed_ugd as $data) {?>
+                                                <tr>
+                                                    <td><?=$data->tanggal?></td>
+                                                    <td><?=$data->nm_dokter?></td>
+                                                    <td><?=$data->anamnesis?></td>
+                                                    <td><?=$data->keluhan_utama?></td>
+                                                    <td><?=$data->rps?></td>
+                                                    <td><?=$data->keadaan?></td>
+                                                    <td><?=$data->gcs?></td>
+                                                    <td><?=$data->kesadaran?></td>
+                                                    <td><?=$data->nadi?></td>
+                                                    <td><?=$data->rr?></td>
+                                                    <td><?=$data->suhu?></td>
+                                                    <td><?=$data->spo?></td>
+                                                    <td><?=$data->bb?></td>
+                                                    <td><?=$data->tb?></td>
+                                                    <td><?=$data->ket_fisik?></td>
+                                                    <td><?=$data->diagnosis?></td>
+                                                    <td><?=$data->tata?></td>
+                                                </tr>
+                                            <?}
+                                        ?>
+                                        
+                                    </tbody>
+                                </table>
+                                    <?}
+                                ?>
+
+<h3>CPPT</h3>
                                              <table id="datatable-cppt" class="table table-sm table-responsive">
                                                 <tbody>
                                               

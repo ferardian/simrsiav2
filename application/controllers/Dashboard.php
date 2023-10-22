@@ -260,6 +260,8 @@ class dashboard extends CI_Controller{
       $data['no_rawat'] = $no_rawat;
       $data['pasien'] = $this->pasien_mod->dataPasien($no_rawat)->row();
       $data['sep']=$this->dashboard_mod->get_sep($no_rawat)->row();
+      @$data['get_asmed_ugd']=$this->dashboard_mod->get_asmed_ugd_all($no_rawat)->result();
+
       if ($data['pasien']->status_lanjut == "Ralan") {
         $data['cppt'] = $this->dashboard_mod->get_pemeriksaan_ralan($data['pasien']->no_rkm_medis,$data['pasien']->tgl_registrasi)->result();
       } else {

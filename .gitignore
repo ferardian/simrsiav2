@@ -1,7 +1,5 @@
 /assets/*.png
 /obat-ku/
-/system/
-/vendor/
 /system/cache/sessions/
 /file/berkas_klaim/*.pdf
 /file/berkas_klaim_pengajuan/*.pdf
