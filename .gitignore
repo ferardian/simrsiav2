@@ -3,5 +3,5 @@
 /system/
 /vendor/
 /system/cache/sessions/
-/file/berkas_klaim/*
-/file/berkas_klaim_pengajuan/*
+/file/berkas_klaim/*.pdf
+/file/berkas_klaim_pengajuan/*.pdf
