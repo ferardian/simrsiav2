@@ -781,6 +781,7 @@ class dashboard extends CI_Controller{
       $get_pasien=$this->dashboard_mod->get_pasien($no_rawat)->row();
       $data['get_resep']=$this->dashboard_mod->get_resep($no_rawat)->result();
       $data['get_lab']=$this->dashboard_mod->get_lab($no_rawat)->result();
+      $data['get_radiologi']=$this->dashboard_mod->get_radiologi_rs($no_rawat)->result();
       $data['get_pasien_naik_kelas']=$this->dashboard_mod->get_naik_kelas_where($no_rawat)->row_array();
       $get_pasien_naik_kelas=$this->dashboard_mod->get_naik_kelas_where($no_rawat)->row();
       // $data['get_pasien_naik_kelas2']=$this->dashboard_mod->get_naik_kelas_where2($no_rawat)->row();
@@ -827,6 +828,7 @@ class dashboard extends CI_Controller{
       @$data['get_prosedur']=$this->dashboard_mod->get_prosedur($no_rawat)->result();
       
       $lab=$this->dashboard_mod->get_lab($no_rawat)->result();
+      $radiologi_rs=$this->dashboard_mod->get_radiologi_rs($no_rawat)->result();
       @$lab_doble=$this->dashboard_mod->get_lab($cari_no_rawat_lab->no_rawat)->result();
       @$laporan_operasi=$this->dashboard_mod->get_laporan_operasi($no_rawat)->result();
       $resep = $this->dashboard_mod->get_resep($no_rawat)->result();
@@ -1206,7 +1208,7 @@ class dashboard extends CI_Controller{
           $dokter = $this->dashboard_mod->getId($l->kd_dokter)->row();
           $petugas = $this->dashboard_mod->getId($l->nip)->row();
           if (!empty($dokter)) {
-            $data['ttd1'] = $this->create_qr("Dikeluarkan di RSIA AISYIYAH PEKAJANGAN\n"."Ditandatangani secara elektronik oleh ".$dokter->nama."\n"."ID ".$dokter->sdk,$l->nm_dokter1);
+            $data['ttd1'] = $this->create_qr("Dikeluarkan di RSIA AISYIYAH PEKAJANGAN\n"."Ditandatangani secara elektronik oleh ".$l->nm_dokter1."\n"."ID ".$dokter->sdk,$l->nm_dokter1);
             }
           if (!empty($petugas)) {
             $data['ttd2'] = $this->create_qr("Dikeluarkan di RSIA AISYIYAH PEKAJANGAN\n"."Ditandatangani secara elektronik oleh ".$petugas->nama."\n"."ID ".$petugas->sdk,$l->nama);
@@ -1251,7 +1253,7 @@ class dashboard extends CI_Controller{
           $dokter = $this->dashboard_mod->getId($l->kd_dokter)->row();
           $petugas = $this->dashboard_mod->getId($l->nip)->row();
           if (!empty($dokter)) {
-            $data['ttd1'] = $this->create_qr("Dikeluarkan di RSIA AISYIYAH PEKAJANGAN\n"."Ditandatangani secara elektronik oleh ".$dokter->nama."\n"."ID ".$dokter->sdk,$l->nm_dokter1);
+            $data['ttd1'] = $this->create_qr("Dikeluarkan di RSIA AISYIYAH PEKAJANGAN\n"."Ditandatangani secara elektronik oleh ".$l->nm_dokter1."\n"."ID ".$dokter->sdk,$l->nm_dokter1);
             }
           if (!empty($petugas)) {
             $data['ttd2'] = $this->create_qr("Dikeluarkan di RSIA AISYIYAH PEKAJANGAN\n"."Ditandatangani secara elektronik oleh ".$petugas->nama."\n"."ID ".$petugas->sdk,$l->nama);
@@ -1293,6 +1295,57 @@ class dashboard extends CI_Controller{
           
         }
       }
+
+
+      if (@$radiologi_rs) {
+        foreach($radiologi_rs as $l){
+
+          $data['no_rawat'] = $l->no_rawat;
+          $data['nm_pasien'] = $l->nm_pasien;
+          $data['no_rkm_medis'] = $l->no_rkm_medis;
+          $data['umurdaftar'] = $l->umurdaftar;
+          $data['sttsumur'] = $l->sttsumur;
+          $data['jk'] = $l->jk;
+          $data['alamat'] = $l->alamat;
+          $data['nm_dokter1'] = $l->nm_dokter1;
+          $data['nm_dokter2'] = $l->nm_dokter2;
+          $data['tgl_periksa'] = $l->tgl_periksa;
+          $data['jam'] = $l->jam;
+          $data['nama'] = $l->nama;
+          $data['nama_perawatan'] = $l->nm_perawatan;
+          $data['kd_dokter'] = $l->kd_dokter;
+          $kamar = $this->dashboard_mod->getKamar($l->no_rawat)->row();
+          if (!isset($kamar->kd_kamar)) {
+            $data['ruang'] = "Poli";
+            $data['nama_ruang'] = $this->dashboard_mod->getNamaPoli($l->no_rawat)->row()->nm_poli;
+          } else {
+            $data['ruang'] = "Kamar";
+            $data['nama_ruang'] = $kamar->kd_kamar;
+          }
+          $dokter_perujuk = $this->dashboard_mod->getId($l->dokter_perujuk)->row();
+          $dokter = $this->dashboard_mod->getId($l->kd_dokter)->row();
+          $petugas = $this->dashboard_mod->getId($l->nip)->row();
+          if (!empty($dokter)) {
+            $data['ttd_rad1'] = $this->create_qr("Dikeluarkan di RSIA AISYIYAH PEKAJANGAN\n"."Ditandatangani secara elektronik oleh ".$l->nm_dokter1."\n"."ID ".$dokter->sdk,$l->nm_dokter1);
+            } else {
+              $data['ttd_rad1'] = $this->create_qr("Dikeluarkan di RSIA AISYIYAH PEKAJANGAN\n"."Ditandatangani secara elektronik oleh ".$l->nm_dokter1."\n"."ID ".$l->kd_dokter,$l->nm_dokter1);
+            }
+          if (!empty($petugas)) {
+            $data['ttd_rad2'] = $this->create_qr("Dikeluarkan di RSIA AISYIYAH PEKAJANGAN\n"."Ditandatangani secara elektronik oleh ".$petugas->nama."\n"."ID ".$petugas->sdk,$l->nama);
+            }
+          $header_rad = $this->load->view('head_cetak_radiologi',$data,true);      
+          $html_rad = $this->load->view('cetak_radiologi',$data, true);
+          $mpdf->WriteHTML($header_rad);
+          $mpdf->WriteHTML($html_rad);
+          
+          if (count($radiologi_rs) >= 1) {
+          $mpdf->AddPage();
+          }
+                  
+        }
+       }
+
+
       if($radiologi){
         foreach($radiologi as $dt){
           if(strpos($dt->file,",") !== false){

@@ -131,6 +131,24 @@ class dashboard_mod extends CI_Model
 
 	}
 
+	function get_radiologi_rs($data){
+		$this->db->select('periksa_radiologi.no_rawat,periksa_radiologi.nip,periksa_radiologi.kd_jenis_prw,reg_periksa.no_rkm_medis,pasien.nm_pasien,pasien.jk,pasien.alamat,reg_periksa.umurdaftar,reg_periksa.sttsumur,petugas.nama,periksa_radiologi.tgl_periksa,periksa_radiologi.jam,periksa_radiologi.dokter_perujuk,periksa_radiologi.kd_dokter,dokter1.nm_dokter as nm_dokter1,dokter2.nm_dokter as nm_dokter2,penjab.png_jawab,jns_perawatan_radiologi.nm_perawatan');
+		$this->db->from('periksa_radiologi');
+		$this->db->join('reg_periksa','reg_periksa.no_rawat=periksa_radiologi.no_rawat');
+		$this->db->join('pasien','pasien.no_rkm_medis=reg_periksa.no_rkm_medis');
+		$this->db->join('petugas','petugas.nip=periksa_radiologi.nip');
+		$this->db->join('penjab','penjab.kd_pj=reg_periksa.kd_pj');
+		$this->db->join('dokter as dokter1','dokter1.kd_dokter=periksa_radiologi.kd_dokter');
+		$this->db->join('dokter as dokter2','dokter2.kd_dokter=reg_periksa.kd_dokter');
+		$this->db->join('jns_perawatan_radiologi','jns_perawatan_radiologi.kd_jenis_prw = periksa_radiologi.kd_jenis_prw');
+		$this->db->where('periksa_radiologi.no_rawat',$data);
+		$this->db->group_by('periksa_radiologi.no_rawat,periksa_radiologi.tgl_periksa,periksa_radiologi.jam');
+		$this->db->order_by('periksa_radiologi.tgl_periksa','asc');
+		$this->db->order_by('periksa_radiologi.jam','asc');
+		return $this->db->get();
+
+	}
+
 	function getCovid($data){
 		$this->db->from('periksa_lab');
 		$this->db->where('periksa_lab.no_rawat',$data);
@@ -471,6 +489,15 @@ class dashboard_mod extends CI_Model
 		$this->db->where('periksa_lab.no_rawat',$no_rawat);
 		$this->db->where('periksa_lab.tgl_periksa',$tgl_periksa);
 		$this->db->where('periksa_lab.jam',$jam);
+		return $this->db->get();
+	}
+	function get_detail_radiologi($no_rawat,$tgl_periksa,$jam){
+		// $this->db->select('jns_perawatan_lab.kd_jenis_prw,jns_perawatan_lab.nm_perawatan,periksa_lab.no_rawat,periksa_lab.tgl_periksa,periksa_lab.jam');
+		$this->db->from('periksa_radiologi');
+		$this->db->join('hasil_radiologi','hasil_radiologi.no_rawat=periksa_radiologi.no_rawat');
+		$this->db->where('hasil_radiologi.no_rawat',$no_rawat);
+		$this->db->where('hasil_radiologi.tgl_periksa',$tgl_periksa);
+		$this->db->where('hasil_radiologi.jam',$jam);
 		return $this->db->get();
 	}
 

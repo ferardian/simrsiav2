@@ -537,6 +537,50 @@ $moneyFormat  = new moneyFormat();
                     <td style="display: none;" align="right"><b><?=$moneyFormat->rupiah($total_lab1)?></b></td>
             </tr>
             <?}?>
+
+
+            <? $psRanapRad = $this->pasien_mod->getRanapRad($d->no_rawat)->result();
+            
+            $total_rad=0;
+
+            if (count($psRanapRad)>0) {?>
+                <tr>         
+                    <td><b><?=$no.". Pemeriksaan Radiologi"?></b></td>
+                    <td>:</td>
+                    <td colspan="6"></td>
+                    <td style="display: none;"></td>
+                    <td style="display: none;"></td>
+                    <td style="display: none;"></td>
+                    <td style="display: none;"></td>
+                    <td style="display: none;"></td>
+                    <?$no++?>
+                </tr> 
+            
+            <!-- $psRanapLabDetail = $this->pasien_mod->getRanapLab($d->no_rawat)->result(); -->
+            <? foreach ($psRanapRad as $rnr ) {
+                // $psRanapRadDetail = $this->pasien_mod->getRanapLabDetail($d->no_rawat,$rnr->kd_jenis_prw)->row();?>
+                <tr>         
+                    <td></td>
+                    <td></td>
+                    <td><?=$rnr->nm_perawatan?></td>
+                    <td>:</td>
+                    <td align="right"><?=$moneyFormat->rupiah($rnr->biaya)?></td>
+                    <td align="right"><?=$rnr->jml?></td>
+                    <td></td>
+                    <td align="right"><?=$moneyFormat->rupiah($rnr->total); $total_rad+=$rnr->total?></td>
+                </tr> 
+            <?}?>
+            <tr>
+                <td></td>
+                <td></td>
+                <td ><b>Total Periksa Radiologi : </b></td>
+                <td style="display: none;"></td>
+                    <td style="display: none;"></td>
+                    <td style="display: none;"></td>
+                    <td style="display: none;"></td>
+                    <td style="display: none;" align="right"><b><?=$moneyFormat->rupiah($total_rad)?></b></td>
+            </tr>
+            <?}?>
         
         
         <?

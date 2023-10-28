@@ -651,6 +651,14 @@ class pasien_mod extends CI_Model{
 			AND periksa_lab.status like "%%" GROUP BY periksa_lab.kd_jenis_prw');
 		}
 
+		function getRanapRad($no_rawat){
+			return $this->db->query('SELECT jns_perawatan_radiologi.nm_perawatan, count(periksa_radiologi.kd_jenis_prw) as jml,periksa_radiologi.biaya as biaya, 
+			sum(periksa_radiologi.biaya) as total,jns_perawatan_radiologi.kd_jenis_prw 
+			from periksa_radiologi inner join jns_perawatan_radiologi 
+			on jns_perawatan_radiologi.kd_jenis_prw=periksa_radiologi.kd_jenis_prw where 
+			periksa_radiologi.no_rawat="'.$no_rawat.'" and periksa_radiologi.status like "%%" group by periksa_radiologi.kd_jenis_prw ');
+		}
+
 		function getRanapLabDetail($no_rawat,$kd_jns_prw){
 			return $this->db->query('SELECT
 			SUM(detail_periksa_lab.biaya_item) AS total
