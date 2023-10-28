@@ -1973,7 +1973,7 @@ $moneyFormat  = new moneyFormat();
                     <td style="display: none;"></td>
                     <td style="display: none;"></td> -->
                             <?
-                                $grand_total = @$gtot1+@$gtot2+@$total_kamar+@$total_lab1+@$total_lab2+@$total_obat1+@$total_obat2+@$total_operasi1+@$total_operasi2+@$total_potongan1+@$total_potongan2+@$total_register+@$total_resep_pulang1+@$total_resep_pulang2+@$total_retur1+@$total_retur2+@$total_tambahan1+@$total_tambahan2;
+                                $grand_total = @$gtot1+@$gtot2+@$total_kamar+@$total_lab1+@$total_lab2+@$total_obat1+@$total_obat2+@$total_operasi1+@$total_operasi2+@$total_potongan1+@$total_potongan2+@$total_register+@$total_resep_pulang1+@$total_resep_pulang2+@$total_retur1+@$total_retur2+@$total_tambahan1+@$total_tambahan2+@$total_rad;
                             ?>
                             <td align="right"><i><b><?=$moneyFormat->rupiah($grand_total)?></b></i></td>
                         </tr>    
