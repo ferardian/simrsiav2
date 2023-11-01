@@ -432,6 +432,7 @@ class dashboard_mod extends CI_Model
 		$this->db->join('pasien','pasien.no_rkm_medis=bridging_sep.nomr');
 		$this->db->where('bridging_sep.no_sep',$data);
 		$this->db->where('bridging_sep.jnspelayanan','1');
+		$this->db->group_by('bridging_sep.no_sep');
 		return $this->db->get();
 	}
 

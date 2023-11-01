@@ -1070,6 +1070,9 @@ class dashboard extends CI_Controller{
           $mpdf->AddPage();
  
         }
+
+        $data['get_spri'] = $this->dashboard_mod->get_spri($sep->no_sep)->row();
+
         if(@$data['get_spri']){
           $mpdf->WriteHTML($html_spri);
           $mpdf->AddPage();
@@ -1437,7 +1440,8 @@ class dashboard extends CI_Controller{
 
         if ($aksi == "lihat") {
           return $mpdf->Output($pdfFilePath['no_rawat']." ".$pdfFilePath['nm_pasien']." (".$pdfFilePath['no_rkm_medis'].")".".pdf", 'I');
-        // print_r($get_pasien_naik_kelas);
+          
+          // var_dump($data['get_spri']->no_surat);
 
         } else if ($aksi == "kirim") {
           $location =  $_SERVER['DOCUMENT_ROOT'].'/simrsiav2/file/berkas_klaim_pengajuan/';
