@@ -187,6 +187,15 @@ class dashboard_mod extends CI_Model
 		return $this->db->get();
 	}
 
+	function get_ttd_dokter_by_nip($data){
+		$this->db->select('maping_dokter_dpjpvclaim.kd_dokter as sdk,pegawai.nama');
+		$this->db->from('bridging_sep');
+		$this->db->join('maping_dokter_dpjpvclaim','maping_dokter_dpjpvclaim.kd_dokter_bpjs=bridging_sep.kddpjp');
+		$this->db->join('pegawai','pegawai.nik=maping_dokter_dpjpvclaim.kd_dokter');		
+		$this->db->where('bridging_sep.no_sep',$data);
+		return $this->db->get();
+	}
+
 	function cari_ttd_petugas($data){
 		$this->db->select('sha1(sidikjari) as sdk,sidikjari.id,pegawai.nama');
 		$this->db->from('pegawai');

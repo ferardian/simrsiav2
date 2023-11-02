@@ -278,7 +278,8 @@ class dashboard extends CI_Controller{
       $jam_perawatan = $data[2];
       
       $data['sep']=$this->dashboard_mod->get_sep($no_rawat)->row();
-      if ($data['sep']->jnspelayanan == 1) {
+      $data['pasien'] = $this->pasien_mod->dataPasien($no_rawat)->row();
+      if ($data['pasien']->status_lanjut == "Ranap") {
         $cari_CPPT = $this->dashboard_mod->cari_cppt($no_rawat,$tgl_perawatan,$jam_perawatan)->row();
         $table = "pemeriksaan_ranap_klaim";
         $table_sumber = "pemeriksaan_ranap";
@@ -310,7 +311,9 @@ class dashboard extends CI_Controller{
         'jam_rawat' => $jam_perawatan,
       );
       $sep=$this->dashboard_mod->get_sep($no_rawat)->row();
-      if ($sep->jnspelayanan == 1) {
+      $pasien = $this->pasien_mod->dataPasien($no_rawat)->row();
+
+      if ($pasien->status_lanjut == "Ranap") {
         $cari_CPPT = $this->dashboard_mod->cari_cppt($no_rawat,$tgl_perawatan,$jam_perawatan)->row();
         $table = "pemeriksaan_ranap_klaim";
       } else {
@@ -846,6 +849,12 @@ class dashboard extends CI_Controller{
       @$data['nama_dokter']=$this->dashboard_mod->get_ttd_dokter($sep->no_sep)->row();
       @$data['nama_pasien']=$this->dashboard_mod->get_sep($no_rawat)->row();
       @$ttd_dokter=$this->dashboard_mod->get_ttd_dokter($sep->no_sep)->row();
+      if ($ttd_dokter) {
+        $ttd_dokter = $ttd_dokter;
+      } else {
+        $ttd_dokter_by_nip=$this->dashboard_mod->get_ttd_dokter_by_nip($sep->no_sep)->row();
+        $ttd_dokter = $ttd_dokter_by_nip;
+      }
       @$ttd_dokter_asmed_ugd=$this->dashboard_mod->getId($get_asmed_ugd->kd_dokter)->row();
       @$data['ttd_dokter'] = $this->create_qr("Dikeluarkan di RSIA AISYIYAH PEKAJANGAN\n"."Ditandatangani secara elektronik oleh ".$ttd_dokter->nama."\n"."ID ".$ttd_dokter->sdk,$ttd_dokter->nama);
 
