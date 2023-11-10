@@ -169,9 +169,11 @@ $moneyFormat  = new moneyFormat();
                 $tarif_dokter_perawat = $this->pasien_mod->getRalanDrPr2($d->no_rawat)->result();
                 $tarif_perawat = $this->pasien_mod->getRalanPerawat2($d->no_rawat)->result();
                 $tarif_lab = $this->pasien_mod->getRanapLab($d->no_rawat)->result();
+                $tarif_radiologi = $this->pasien_mod->getRanapRad($d->no_rawat)->result();
 
                 $total_tindakan=0;
                 $total_lab=0;
+                $total_radiologi=0;
 
             foreach($tarif_dokter as $td ){?>
             <tr> 
@@ -227,6 +229,19 @@ $moneyFormat  = new moneyFormat();
                 <td align="right"><?=$tl->jml?></td>
                 <td></td>
                 <td align="right"><?=$moneyFormat->rupiah($tl->total); $total_lab+=$tl->total?></td>
+            </tr> 
+        <?}
+        foreach($tarif_radiologi as $tr){?>
+            <tr>         
+                <td></td>
+                <td></td>
+                <td><?=$tr->nm_perawatan?></td>
+                <td>:</td>
+                <td></td>
+                <!-- <td align="right"><?=$moneyFormat->rupiah($tl->biaya)?></td> -->
+                <td align="right"><?=$tr->jml?></td>
+                <td></td>
+                <td align="right"><?=$moneyFormat->rupiah($tr->total); $total_radiologi+=$tr->total?></td>
             </tr> 
         <?}
             
@@ -368,7 +383,7 @@ $moneyFormat  = new moneyFormat();
                     <td style="display: none;"></td>
                     <td style="display: none;"></td>
                             <?
-                                $grand_total = @$total_tindakan+@$total_lab+@$total_obat+@$total_potongan+@$total_register+@$total_tambahan;
+                                $grand_total = @$total_tindakan+@$total_lab+@$total_radiologi+@$total_obat+@$total_potongan+@$total_register+@$total_tambahan;
                             ?>
                             <td align="right"><i><b><?=$moneyFormat->rupiah($grand_total)?></b></i></td>
                         </tr>    
