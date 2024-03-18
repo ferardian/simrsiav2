@@ -1000,13 +1000,13 @@ class dashboard extends CI_Controller{
             $mpdf->AddPage();
           }
         }
-        if($data['get_resume_ralan']){
-          $mpdf->AddPage('L');
-          $mpdf->WriteHTML($header_resume_ralan);
-          $mpdf->WriteHTML($html_resume_ralan,\Mpdf\HTMLParserMode::HTML_BODY);
-          $mpdf->AddPage();
+        // if($data['get_resume_ralan']){
+        //   $mpdf->AddPage('L');
+        //   $mpdf->WriteHTML($header_resume_ralan);
+        //   $mpdf->WriteHTML($html_resume_ralan,\Mpdf\HTMLParserMode::HTML_BODY);
+        //   $mpdf->AddPage();
 
-        }
+        // }
 
 
         if($resume_berkas){
