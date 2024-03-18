@@ -994,11 +994,11 @@ class dashboard extends CI_Controller{
         if($data['get_resume']){
           $mpdf->WriteHTML($header_resume);
           $mpdf->WriteHTML($html_resume,\Mpdf\HTMLParserMode::HTML_BODY);
-          if($data['get_resume_ralan']){
-            $mpdf->AddPage('L');
-          } else {
+          // if($data['get_resume_ralan']){
+          //   $mpdf->AddPage('L');
+          // } else {
             $mpdf->AddPage();
-          }
+          // }
         }
         // if($data['get_resume_ralan']){
         //   $mpdf->AddPage('L');
