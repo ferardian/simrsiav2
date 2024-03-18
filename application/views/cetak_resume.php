@@ -239,6 +239,12 @@
         </tr>
         <tr>
             <td colspan="2" style="border: 1px solid black;">
+            <b>EDUKASI</b> <br>
+            <?=@nl2br($data->edukasi)?>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2" style="border: 1px solid black;">
             <table>
                 <tr>
                     <td width="250"><b>SHK</b></td>

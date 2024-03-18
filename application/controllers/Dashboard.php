@@ -464,6 +464,7 @@ class dashboard extends CI_Controller{
     function get_lembar_klaim($no_rawat){
         $no_rawat = str_replace('-','/',$no_rawat);
         $sep= $this->dashboard_mod->get_sep($no_rawat)->row();
+        print_r($sep);
         $kode_berkas = $this->dashboard_mod->getKodeBerkas()->row();
         $data['no_rawat'] = $no_rawat;
         // $sep = $this->dashboard_mod->get_sep_batch()->result();
@@ -476,6 +477,7 @@ class dashboard extends CI_Controller{
           $ws_query["metadata"]["method"] = "claim_print";
           $ws_query["data"]["nomor_sep"] = $sep->no_sep;
           $json_request = json_encode($ws_query);
+          print_r($ws_query);
           // data yang akan dikirimkan dengan method POST adalah encrypted:
           $payload = $this->inacbg_encrypt($json_request,$key);
           // tentukan Content-Type pada http header
@@ -803,6 +805,7 @@ class dashboard extends CI_Controller{
       @$data['get_resep_gabung']=$this->dashboard_mod->get_resep($cek_gabung->no_rawat2)->result();
       @$data['get_asmed_ugd']=$this->dashboard_mod->get_asmed_ugd($no_rawat)->result();
       @$data['get_resume']=$this->dashboard_mod->get_resume($no_rawat)->result();
+      @$data['get_resume_ralan']=$this->dashboard_mod->get_resume_ralan($no_rawat)->result();
       @$data['get_pemeriksaan_usg']=$this->dashboard_mod->get_pemeriksaan_usg($no_rawat)->row();
       if (@$get_sep->jnspelayanan == "2") {
         @$data['get_pemeriksaan']=$this->dashboard_mod->get_pemeriksaan_ralan_klaim($get_pasien->no_rkm_medis,$get_pasien->tgl_registrasi)->result();
@@ -813,6 +816,7 @@ class dashboard extends CI_Controller{
       @$data['get_laporan_operasi']=$this->dashboard_mod->get_laporan_operasi($no_rawat)->result();
       @$get_asmed_ugd=$this->dashboard_mod->get_asmed_ugd($no_rawat)->row();
       @$get_resume=$this->dashboard_mod->get_resume($no_rawat)->row();
+      @$get_resume_ralan=$this->dashboard_mod->get_resume_ralan($no_rawat)->row();
       if ($get_resume) {
         if (strpos(@$get_resume->kd_kamar, 'Anak') !== FALSE) {
           @$ttd_resume = $this->dashboard_mod->cari_ttd_petugas('Anak')->row();
@@ -899,6 +903,7 @@ class dashboard extends CI_Controller{
       $header_asmed_ugd = $this->load->view('head_cetak_asmed_ugd',$data,true);
       // $header_hasil_usg = $this->load->view('head_cetak_hasil_usg',$data,true);
       $header_resume = $this->load->view('head_cetak_resume',$data,true);
+      $header_resume_ralan = $this->load->view('head_cetak_resume_ralan',$data,true);
       $header_cppt = $this->load->view('head_cetak_cppt',$data,true);
       $header_laporan_op = $this->load->view('head_cetak_laporan_op',$data,true);
       $header_kasir = $this->load->view('head_cetak_billing',$data,true);
@@ -906,6 +911,7 @@ class dashboard extends CI_Controller{
       $html_sep = $this->load->view('cetak_sep',$data, true);
       @$html_asmed_ugd = $this->load->view('cetak_asmed_ugd',$data, true);
       @$html_resume = $this->load->view('cetak_resume',$data, true);
+      @$html_resume_ralan = $this->load->view('cetak_resume_ralan',$data, true);
       @$html_pemeriksaan_usg = $this->load->view('cetak_hasil_pemeriksaan_usg',$data, true);
       @$html_laporan_operasi = $this->load->view('cetak_laporan_op',$data, true);
       @$html_surat_kontrol = $this->load->view('cetak_surat_kontrol',$data, true);
@@ -988,7 +994,18 @@ class dashboard extends CI_Controller{
         if($data['get_resume']){
           $mpdf->WriteHTML($header_resume);
           $mpdf->WriteHTML($html_resume,\Mpdf\HTMLParserMode::HTML_BODY);
+          if($data['get_resume_ralan']){
+            $mpdf->AddPage('L');
+          } else {
+            $mpdf->AddPage();
+          }
+        }
+        if($data['get_resume_ralan']){
+          $mpdf->AddPage('L');
+          $mpdf->WriteHTML($header_resume_ralan);
+          $mpdf->WriteHTML($html_resume_ralan,\Mpdf\HTMLParserMode::HTML_BODY);
           $mpdf->AddPage();
+
         }
 
 

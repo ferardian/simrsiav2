@@ -309,6 +309,20 @@ class dashboard_mod extends CI_Model
 		return $this->db->get();
 	}
 
+	function get_resume_ralan($data){
+		$this->db->from('pemeriksaan_ralan');
+		$this->db->join('reg_periksa','reg_periksa.no_rawat=pemeriksaan_ralan.no_rawat');
+		$this->db->join('pasien','pasien.no_rkm_medis=reg_periksa.no_rkm_medis');
+		$this->db->join('diagnosa_pasien','diagnosa_pasien.no_rawat=pemeriksaan_ralan.no_rawat');
+		$this->db->join('poliklinik','poliklinik.kd_poli=reg_periksa.kd_poli');
+		$this->db->join('penjab','penjab.kd_pj=reg_periksa.kd_pj');
+		$this->db->join('dokter','dokter.kd_dokter=reg_periksa.kd_dokter');
+		$this->db->join('penyakit','penyakit.kd_penyakit=diagnosa_pasien.kd_penyakit');
+		$this->db->where('pemeriksaan_ralan.no_rawat',$data);
+		$this->db->group_by('pemeriksaan_ralan.no_rawat');
+		return $this->db->get();
+	}
+
 	function get_resume_gabung($data){
 		$this->db->select('resume_pasien_ranap.*,pasien.no_rkm_medis,pasien.nm_pasien,pasien.namakeluarga,pasien.tgl_lahir,reg_periksa.umurdaftar,reg_periksa.sttsumur,reg_periksa.tgl_registrasi,reg_periksa.jam_reg,pasien.tgl_lahir,pasien.alamat,pasien.no_tlp,dokter.nm_dokter');
 		$this->db->from('resume_pasien_ranap');

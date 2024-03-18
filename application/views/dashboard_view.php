@@ -148,6 +148,7 @@
                         $verif_resume_ralan+=1;
                     } else if (@$status_ralan->status == "Pengajuan"){
                         $arr_pengajuan_ralan[] = $data;
+                        $no_rawat[]=$data->no_rawat;
                         $pengajuan_ralan+=1;
                     } else if (@$status_ralan->status == "Disetujui"){
                         $arr_disetujui_ralan[] = $data;
@@ -166,6 +167,10 @@
                     //     $arr_pending_ralan[] = $data;
                     //     $pending_ralan+=1;
                     // } 
+                }
+
+                foreach ($berkas_klaim_ralan as $data) {
+                    $no_rawat_kirim[]=$data->no_rawat;
                 }
 
                 foreach ($pending_ranap as $pr ) {
@@ -580,6 +585,7 @@ function batal(){
 }
 
 function pengajuan_rajal(){
+console.log('<?php echo json_encode($no_rawat)?>');
     var status = "Pengajuan";
     var data1 = '<?php echo json_encode($arr_pengajuan_ralan)?>';
     var data2 = '<?php echo json_encode([])?>';
@@ -765,6 +771,7 @@ function pending(){
 }
 
 function klaim_ralan(){
+    console.log('<?php echo json_encode($no_rawat_kirim)?>');
     var data1 = '<?php echo json_encode($berkas_klaim_ralan)?>';
     console.log(data1);
     $.ajax({

@@ -1347,7 +1347,49 @@ $moneyFormat  = new moneyFormat();
                     <td style="display: none;" align="right"><b><?=$moneyFormat->rupiah($total_lab2)?></b></td>
          </tr>
          <?}?>
+        
+         <? $psRanapRad = $this->pasien_mod->getRanapRad($cek_gabung->no_rawat2)->result();
+            
+            $total_rad2=0;
 
+            if (count($psRanapRad)>0) {?>
+                <tr>         
+                    <td><b><?=$no.". Pemeriksaan Radiologi"?></b></td>
+                    <td>:</td>
+                    <td colspan="6"></td>
+                    <td style="display: none;"></td>
+                    <td style="display: none;"></td>
+                    <td style="display: none;"></td>
+                    <td style="display: none;"></td>
+                    <td style="display: none;"></td>
+                    <?$no++?>
+                </tr> 
+            
+            <!-- $psRanapLabDetail = $this->pasien_mod->getRanapLab($d->no_rawat)->result(); -->
+            <? foreach ($psRanapRad as $rnr ) {
+                // $psRanapRadDetail = $this->pasien_mod->getRanapLabDetail($d->no_rawat,$rnr->kd_jenis_prw)->row();?>
+                <tr>         
+                    <td></td>
+                    <td></td>
+                    <td><?=$rnr->nm_perawatan?></td>
+                    <td>:</td>
+                    <td align="right"><?=$moneyFormat->rupiah($rnr->biaya)?></td>
+                    <td align="right"><?=$rnr->jml?></td>
+                    <td></td>
+                    <td align="right"><?=$moneyFormat->rupiah($rnr->total); $total_rad2+=$rnr->total?></td>
+                </tr> 
+            <?}?>
+            <tr>
+                <td></td>
+                <td></td>
+                <td ><b>Total Periksa Radiologi : </b></td>
+                <td style="display: none;"></td>
+                    <td style="display: none;"></td>
+                    <td style="display: none;"></td>
+                    <td style="display: none;"></td>
+                    <td style="display: none;" align="right"><b><?=$moneyFormat->rupiah($total_rad2)?></b></td>
+            </tr>
+            <?}?>
          
         <?
         $total_operasi2 = 0;
@@ -1973,7 +2015,7 @@ $moneyFormat  = new moneyFormat();
                     <td style="display: none;"></td>
                     <td style="display: none;"></td> -->
                             <?
-                                $grand_total = @$gtot1+@$gtot2+@$total_kamar+@$total_lab1+@$total_lab2+@$total_obat1+@$total_obat2+@$total_operasi1+@$total_operasi2+@$total_potongan1+@$total_potongan2+@$total_register+@$total_resep_pulang1+@$total_resep_pulang2+@$total_retur1+@$total_retur2+@$total_tambahan1+@$total_tambahan2+@$total_rad;
+                                $grand_total = @$gtot1+@$gtot2+@$total_kamar+@$total_lab1+@$total_lab2+@$total_obat1+@$total_obat2+@$total_operasi1+@$total_operasi2+@$total_potongan1+@$total_potongan2+@$total_register+@$total_resep_pulang1+@$total_resep_pulang2+@$total_retur1+@$total_retur2+@$total_tambahan1+@$total_tambahan2+@$total_rad+@$total_rad2;
                             ?>
                             <td align="right"><i><b><?=$moneyFormat->rupiah($grand_total)?></b></i></td>
                         </tr>    
