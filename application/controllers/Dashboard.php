@@ -1164,6 +1164,8 @@ class dashboard extends CI_Controller{
           $mpdf->AddPage();
         }
 
+        @$data['get_pemeriksaan_usg']=$this->dashboard_mod->get_pemeriksaan_usg($no_rawat)->row();
+
         if(@$data['get_pemeriksaan_usg']){
           $mpdf->WriteHTML($html_pemeriksaan_usg);
           $mpdf->AddPage();
