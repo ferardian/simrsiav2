@@ -3,8 +3,10 @@
 
 <table autosize="1" style="border: 1px solid black;font-size:10pt;width:100%;">
 <?
-    foreach ($get_asmed_ugd as $data) {?>
-        <tr>
+    foreach ($get_asmed_ugd as $data) {
+        
+        ?>
+          <tr>
             <!-- <td colspan="5" style="border: 1px solid black;">
                 <table width="100%">
                     <tr>
@@ -44,7 +46,6 @@
                 </table>
             </td>
         </tr>
-
         <tr>
             <td colspan="6" style="border: 1px solid black;">
                 <table >

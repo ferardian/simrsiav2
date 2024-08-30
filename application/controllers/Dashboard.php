@@ -804,6 +804,11 @@ class dashboard extends CI_Controller{
       @$data['get_pasien_gabung']=$this->dashboard_mod->get_pasien($cek_gabung->no_rawat2)->row_array();
       @$data['get_resep_gabung']=$this->dashboard_mod->get_resep($cek_gabung->no_rawat2)->result();
       @$data['get_asmed_ugd']=$this->dashboard_mod->get_asmed_ugd($no_rawat)->result();
+      @$data['get_triase_skala1']=$this->dashboard_mod->get_triase_skala1($no_rawat)->row();
+      @$data['get_triase_skala2']=$this->dashboard_mod->get_triase_skala2($no_rawat)->row();
+      @$data['get_triase_skala3']=$this->dashboard_mod->get_triase_skala3($no_rawat)->row();
+      @$data['get_triase_skala4']=$this->dashboard_mod->get_triase_skala4($no_rawat)->row();
+      @$data['get_triase_skala5']=$this->dashboard_mod->get_triase_skala5($no_rawat)->row();
       @$data['get_resume']=$this->dashboard_mod->get_resume($no_rawat)->result();
       @$data['get_resume_ralan']=$this->dashboard_mod->get_resume_ralan($no_rawat)->result();
       @$data['get_pemeriksaan_usg']=$this->dashboard_mod->get_pemeriksaan_usg($no_rawat)->row();
@@ -901,6 +906,7 @@ class dashboard extends CI_Controller{
       $header_sep = $this->load->view('head_cetak_sep',$data,true);
       $header_skl = $this->load->view('head_cetak_skl',$data,true);
       $header_asmed_ugd = $this->load->view('head_cetak_asmed_ugd',$data,true);
+      $header_triase= $this->load->view('head_cetak_triase',$data,true);
       // $header_hasil_usg = $this->load->view('head_cetak_hasil_usg',$data,true);
       $header_resume = $this->load->view('head_cetak_resume',$data,true);
       $header_resume_ralan = $this->load->view('head_cetak_resume_ralan',$data,true);
@@ -910,6 +916,7 @@ class dashboard extends CI_Controller{
       $head_table = $this->load->view('head_table','',true);
       $html_sep = $this->load->view('cetak_sep',$data, true);
       @$html_asmed_ugd = $this->load->view('cetak_asmed_ugd',$data, true);
+      @$html_triase = $this->load->view('cetak_triase',$data, true);
       @$html_resume = $this->load->view('cetak_resume',$data, true);
       @$html_resume_ralan = $this->load->view('cetak_resume_ralan',$data, true);
       @$html_pemeriksaan_usg = $this->load->view('cetak_hasil_pemeriksaan_usg',$data, true);
@@ -984,6 +991,12 @@ class dashboard extends CI_Controller{
 
        
 
+        if($data['get_asmed_ugd']){
+          $mpdf->WriteHTML($header_triase);
+          $mpdf->WriteHTML($html_triase,\Mpdf\HTMLParserMode::HTML_BODY);
+          $mpdf->AddPage();
+        }
+        
         if($data['get_asmed_ugd']){
           $mpdf->WriteHTML($header_asmed_ugd);
           $mpdf->WriteHTML($html_asmed_ugd,\Mpdf\HTMLParserMode::HTML_BODY);
@@ -1469,7 +1482,7 @@ class dashboard extends CI_Controller{
         if ($aksi == "lihat") {
           return $mpdf->Output($pdfFilePath['no_rawat']." ".$pdfFilePath['nm_pasien']." (".$pdfFilePath['no_rkm_medis'].")".".pdf", 'I');
           
-          // var_dump($data['get_spri']->no_surat);
+          // var_dump($data['get_triase_skala3']);
 
         } else if ($aksi == "kirim") {
           $location =  $_SERVER['DOCUMENT_ROOT'].'/simrsiav2/file/berkas_klaim_pengajuan/';

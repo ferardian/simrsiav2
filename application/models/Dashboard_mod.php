@@ -381,6 +381,7 @@ class dashboard_mod extends CI_Model
 	function hapusCPPT($table,$data){
 		return $this->db->delete($table,$data);
 	}
+	
 
 	function get_asmed_ugd($data){
 		return $this->db->query('select reg_periksa.no_rawat,reg_periksa.umurdaftar,reg_periksa.sttsumur,pasien.no_rkm_medis,pasien.alamat,pasien.no_tlp,pasien.nm_pasien,if(pasien.jk="L","Laki-Laki","Perempuan") as jk,pasien.jk as jekel,pasien.tgl_lahir,penilaian_medis_igd.tanggal,penilaian_medis_igd.kd_dokter,penilaian_medis_igd.anamnesis,penilaian_medis_igd.hubungan,penilaian_medis_igd.keluhan_utama,penilaian_medis_igd.rps,penilaian_medis_igd.rpk,penilaian_medis_igd.rpd,penilaian_medis_igd.rpo,penilaian_medis_igd.alergi,penilaian_medis_igd.keadaan,penilaian_medis_igd.gcs,penilaian_medis_igd.kesadaran,penilaian_medis_igd.td,penilaian_medis_igd.nadi,penilaian_medis_igd.rr,penilaian_medis_igd.suhu,penilaian_medis_igd.spo,penilaian_medis_igd.bb,penilaian_medis_igd.tb,penilaian_medis_igd.kepala,penilaian_medis_igd.mata,penilaian_medis_igd.gigi,penilaian_medis_igd.leher,penilaian_medis_igd.thoraks,penilaian_medis_igd.abdomen,penilaian_medis_igd.ekstremitas,penilaian_medis_igd.genital,penilaian_medis_igd.ket_fisik,penilaian_medis_igd.ket_lokalis,penilaian_medis_igd.ekg,penilaian_medis_igd.rad,penilaian_medis_igd.lab,penilaian_medis_igd.diagnosis,penilaian_medis_igd.tata,dokter.nm_dokter from reg_periksa inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis inner join penilaian_medis_igd on reg_periksa.no_rawat=penilaian_medis_igd.no_rawat inner join dokter on penilaian_medis_igd.kd_dokter=dokter.kd_dokter where penilaian_medis_igd.no_rawat="'.$data.'" and reg_periksa.status_lanjut="Ralan"');
@@ -389,6 +390,82 @@ class dashboard_mod extends CI_Model
 	function get_asmed_ugd_all($data){
 		return $this->db->query('select reg_periksa.no_rawat,reg_periksa.umurdaftar,reg_periksa.sttsumur,pasien.no_rkm_medis,pasien.alamat,pasien.no_tlp,pasien.nm_pasien,if(pasien.jk="L","Laki-Laki","Perempuan") as jk,pasien.jk as jekel,pasien.tgl_lahir,penilaian_medis_igd.tanggal,penilaian_medis_igd.kd_dokter,penilaian_medis_igd.anamnesis,penilaian_medis_igd.hubungan,penilaian_medis_igd.keluhan_utama,penilaian_medis_igd.rps,penilaian_medis_igd.rpk,penilaian_medis_igd.rpd,penilaian_medis_igd.rpo,penilaian_medis_igd.alergi,penilaian_medis_igd.keadaan,penilaian_medis_igd.gcs,penilaian_medis_igd.kesadaran,penilaian_medis_igd.td,penilaian_medis_igd.nadi,penilaian_medis_igd.rr,penilaian_medis_igd.suhu,penilaian_medis_igd.spo,penilaian_medis_igd.bb,penilaian_medis_igd.tb,penilaian_medis_igd.kepala,penilaian_medis_igd.mata,penilaian_medis_igd.gigi,penilaian_medis_igd.leher,penilaian_medis_igd.thoraks,penilaian_medis_igd.abdomen,penilaian_medis_igd.ekstremitas,penilaian_medis_igd.genital,penilaian_medis_igd.ket_fisik,penilaian_medis_igd.ket_lokalis,penilaian_medis_igd.ekg,penilaian_medis_igd.rad,penilaian_medis_igd.lab,penilaian_medis_igd.diagnosis,penilaian_medis_igd.tata,dokter.nm_dokter from reg_periksa inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis inner join penilaian_medis_igd on reg_periksa.no_rawat=penilaian_medis_igd.no_rawat inner join dokter on penilaian_medis_igd.kd_dokter=dokter.kd_dokter where penilaian_medis_igd.no_rawat="'.$data.'"');
 	}
+
+	function get_triase_skala1($data){
+		$this->db->from('rsia_data_triase_ugddetail_skala1');
+		$this->db->where('rsia_data_triase_ugddetail_skala1.no_rawat',$data);
+		return $this->db->get();
+	}
+
+	function cek_triase_skala1($data,$name){
+		$this->db->from('rsia_data_triase_ugddetail_skala1');
+		$this->db->join('rsia_master_triase_skala1','rsia_master_triase_skala1.kode_skala1=rsia_data_triase_ugddetail_skala1.kode_skala1');
+		$this->db->join('rsia_master_triase_pemeriksaan','rsia_master_triase_pemeriksaan.kode_pemeriksaan=rsia_master_triase_skala1.kode_pemeriksaan');
+		$this->db->where('rsia_data_triase_ugddetail_skala1.no_rawat',$data);
+		$this->db->where('rsia_master_triase_skala1.pengkajian_skala1',$name);
+		return $this->db->get();
+	}
+
+	function get_triase_skala2($data){
+		$this->db->from('rsia_data_triase_ugddetail_skala2');
+		$this->db->where('rsia_data_triase_ugddetail_skala2.no_rawat',$data);
+		return $this->db->get();
+	}
+
+	function cek_triase_skala2($data,$name){
+		$this->db->from('rsia_data_triase_ugddetail_skala2');
+		$this->db->join('rsia_master_triase_skala2','rsia_master_triase_skala2.kode_skala2=rsia_data_triase_ugddetail_skala2.kode_skala2');
+		$this->db->join('rsia_master_triase_pemeriksaan','rsia_master_triase_pemeriksaan.kode_pemeriksaan=rsia_master_triase_skala2.kode_pemeriksaan');
+		$this->db->where('rsia_data_triase_ugddetail_skala2.no_rawat',$data);
+		$this->db->where('rsia_master_triase_skala2.pengkajian_skala2',$name);
+		return $this->db->get();
+	}
+
+	function get_triase_skala3($data){
+		$this->db->from('rsia_data_triase_ugddetail_skala3');
+		$this->db->where('rsia_data_triase_ugddetail_skala3.no_rawat',$data);
+		return $this->db->get();
+	}
+
+	function cek_triase_skala3($data,$name){
+		$this->db->from('rsia_data_triase_ugddetail_skala3');
+		$this->db->join('rsia_master_triase_skala3','rsia_master_triase_skala3.kode_skala3=rsia_data_triase_ugddetail_skala3.kode_skala3');
+		$this->db->join('rsia_master_triase_pemeriksaan','rsia_master_triase_pemeriksaan.kode_pemeriksaan=rsia_master_triase_skala3.kode_pemeriksaan');
+		$this->db->where('rsia_data_triase_ugddetail_skala3.no_rawat',$data);
+		$this->db->where('rsia_master_triase_skala3.pengkajian_skala3',$name);
+		return $this->db->get();
+	}
+
+	function get_triase_skala4($data){
+		$this->db->from('rsia_data_triase_ugddetail_skala4');
+		$this->db->where('rsia_data_triase_ugddetail_skala4.no_rawat',$data);
+		return $this->db->get();
+	}
+
+	function cek_triase_skala4($data,$name){
+		$this->db->from('rsia_data_triase_ugddetail_skala4');
+		$this->db->join('rsia_master_triase_skala4','rsia_master_triase_skala4.kode_skala4=rsia_data_triase_ugddetail_skala4.kode_skala4');
+		$this->db->join('rsia_master_triase_pemeriksaan','rsia_master_triase_pemeriksaan.kode_pemeriksaan=rsia_master_triase_skala4.kode_pemeriksaan');
+		$this->db->where('rsia_data_triase_ugddetail_skala4.no_rawat',$data);
+		$this->db->where('rsia_master_triase_skala4.pengkajian_skala4',$name);
+		return $this->db->get();
+	}
+
+	function get_triase_skala5($data){
+		$this->db->from('rsia_data_triase_ugddetail_skala5');
+		$this->db->where('rsia_data_triase_ugddetail_skala5.no_rawat',$data);
+		return $this->db->get();
+	}
+
+	function cek_triase_skala5($data,$name){
+		$this->db->from('rsia_data_triase_ugddetail_skala5');
+		$this->db->join('rsia_master_triase_skala5','rsia_master_triase_skala5.kode_skala5=rsia_data_triase_ugddetail_skala5.kode_skala5');
+		$this->db->join('rsia_master_triase_pemeriksaan','rsia_master_triase_pemeriksaan.kode_pemeriksaan=rsia_master_triase_skala5.kode_pemeriksaan');
+		$this->db->where('rsia_data_triase_ugddetail_skala5.no_rawat',$data);
+		$this->db->where('rsia_master_triase_skala5.pengkajian_skala5',$name);
+		return $this->db->get();
+	}
+
 
 	function get_pemeriksaan_usg($data){
 		$this->db->from('catatan_perawatan');
